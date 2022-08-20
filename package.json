@@ -4,6 +4,7 @@
   "description": "Jiny Academy individual project",
   "main": "index.js",
   "scripts": {
+    "start":"cd client && npm ci && npm run build && cd ../ && mv ./client/build ./server && cd server && npm ci && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

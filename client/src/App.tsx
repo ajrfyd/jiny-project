@@ -1,12 +1,17 @@
 import React from "react";
+import styled from "styled-components";
 
 const App = () => {
 
   return (
-    <div>
+    <Container>
       Hello App??
-    </div>
+    </Container>
   )
 }
 
 export default App;
+
+const Container = styled.div`
+  font-size: 300px;
+`
