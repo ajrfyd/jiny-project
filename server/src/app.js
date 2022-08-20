@@ -3,6 +3,7 @@ import cors from 'cors';
 import c from 'chalk';
 import dotenv from 'dotenv';
 import path from 'path';
+import testRoute from './route/test.js';
 
 const { log } = console;
 
@@ -21,6 +22,10 @@ app.get('/', (req, res) => {
 });
 
 log(c.blue(path.resolve() + '/build/index.html'));
+
+testRoute.forEach(({ method, route, handler }) => {
+  app[method](route, handler);
+});
 
 app.listen(PORT, () => {
   log(c.red(`Server Listening on ${PORT}`))
