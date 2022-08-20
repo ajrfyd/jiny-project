@@ -9,6 +9,7 @@ client: create-react-app(typescript)
   - redux
   - react-redux
   - react-icons
+  
 server: node.js
   - express
   - cors
