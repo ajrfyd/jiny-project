@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import db from '../../models/index.js';
-import { email_reg, pwd_reg, USER_VALIDATION_ERRORS } from '../utils/ahthUtils.js';
-import { hashPwd } from '../utils/ahthUtils.js';
+import { email_reg, pwd_reg, USER_VALIDATION_ERRORS, hashPwd, verifyToken} from '../utils/ahthUtils.js';
 import c from 'chalk';
 
 const { log } = console;
@@ -44,18 +43,16 @@ export const createUser = async (userInfo) => {
 
 /**
  * 사용자의 role을 체크 합니다.
- * @param { string } token 
+ * @param { string } authorizaion 
  * @returns boolen
  */
-export const roleCheck = (token) => {
-  // const { JWT_SECRET } = process.env;
+export const roleCheck = async (authorizaion) => {
+  const token = authorizaion.split(' ')[1];
+  const verified = verifyToken(token);
 
-  // const info = jwt.verify(token, JWT_SECRET);
+  const dbData = await db.User.findOne({ where: { email: verified.email }});
 
-  // const { role } = await db.User.findOne({ where: { userName: info.userName } });
-
-  // return role === 0 ? true : false;
-
+  return dbData && dbData.role === 0 ? true : false;
 };
 
 /**
@@ -92,4 +89,6 @@ export const formValidator = (form) => {
   }
 };
 
-
+export const userList = async () => {
+  return await db.User.findAll();
+};

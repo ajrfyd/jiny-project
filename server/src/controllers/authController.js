@@ -1,5 +1,5 @@
-import { createToken, isCorrectPwd, hashPwd } from "../utils/ahthUtils.js";
-import { formValidator, findUser, createUser } from "../services/userService.js";
+import { createToken, isCorrectPwd, hashPwd, verifyToken } from "../utils/ahthUtils.js";
+import { formValidator, findUser, createUser, roleCheck, userList } from "../services/userService.js";
 import { USER_VALIDATION_ERRORS } from "../utils/ahthUtils.js";
 import c from 'chalk';
 
@@ -21,7 +21,7 @@ export const login = async (req, res) => {
       message: USER_VALIDATION_ERRORS.USER_NOT_FOUND
     })
   } else {
-    const hashed = hashPwd(password);
+    const hashed = await hashPwd(password);
     if(isCorrectPwd(hashed, user.password)) {
       res.status(200).json({
         token: createToken({ userName, email }),
@@ -69,3 +69,15 @@ export const signUp = async (req, res) => {
     }
   }
 };
+
+export const queryUserList = async (req, res) => {
+  const { authorization } = req.headers;
+
+  const auth = await roleCheck(authorization);
+
+  if(auth) {
+    res.status(200).json({
+      userList: await userList()
+    })
+  }
+}; 

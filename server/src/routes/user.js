@@ -1,6 +1,6 @@
 import c from 'chalk';
 import db from '../../models/index.js';
-import { login, signUp } from '../controllers/authController.js'
+import { login, signUp, queryUserList } from '../controllers/authController.js'
 
 const { log } = console;
 const BASE = '/users';
@@ -10,7 +10,7 @@ const userRouter = [
     method: 'get',
     route: BASE,
     handler: async (req, res) => {
-      
+      return queryUserList(req, res);
     }
   },
   {

@@ -7,8 +7,8 @@ export const createToken = (userInfo) => {
   return jwt.sign(userInfo, JWT_SALT);
 };
 
-export const verifyToken = () => {
-  return jwt.verify(userInfo, JWT_SALT);
+export const verifyToken = (token) => {
+  return jwt.verify(token, JWT_SALT);
 };
 
 export const isCorrectPwd = (pwd, dbPwd) => {
