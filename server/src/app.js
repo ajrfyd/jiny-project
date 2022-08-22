@@ -16,7 +16,13 @@ db.sequelize.sync()
 app.use(express.static('build'));
 
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  credentials: true
+}));
 
 app.use(logger);
 
@@ -32,7 +38,10 @@ routers.forEach(({ method, route, handler}) => {
   app[method](route, handler);
 });
 
-log(c.bgGreenBright(process.env.NODE_ENV))
+app.use((err, req, res, next) => {
+  log(c.bgRed(err));
+  
+});
 
 app.listen(PORT, () => {
   log(c.red(`Server Listening on ${PORT}`))

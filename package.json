@@ -4,7 +4,7 @@
   "description": "Jiny Academy individual project",
   "main": "index.js",
   "scripts": {
-    "start":"cd client && npm ci && npm run build && cd ../ && mv ./client/build ./server && cd server && npm ci && npm start",
+    "start": "cd client && npm ci && npm run build && cd ../ && mv ./client/build ./server && cd server && npm ci && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/ajrfyd/jiny-project/issues"
   },
-  "homepage": "https://github.com/ajrfyd/jiny-project#readme"
+  "homepage": "https://github.com/ajrfyd/jiny-project#readme",
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1"
+  }
 }

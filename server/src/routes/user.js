@@ -1,14 +1,32 @@
 import c from 'chalk';
+import db from '../../models/index.js';
+import { login, signUp } from '../controllers/authController.js'
 
 const { log } = console;
-const BASE = '/user';
+const BASE = '/users';
 
 const userRouter = [
   {
     method: 'get',
     route: BASE,
+    handler: async (req, res) => {
+      
+    }
+  },
+  {
+    method: 'post',
+    route: BASE + '/login',
     handler: (req, res) => {
-      res.send('User');
+      return login(req, res);
+    }
+  },
+  {
+    method: 'post',
+    route: BASE + '/create',
+    handler: (req, res) => {
+      // const { userName, email, password } = req.body;
+      // res.send('User');
+      return signUp(req, res);
     }
   }
 ]
