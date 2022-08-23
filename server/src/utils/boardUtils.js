@@ -1,6 +1,6 @@
 import db from "../../models/index.js";
 
-export const obj = {
+export const boards = {
   notice: '공지',
   chat: '잡담',
   coding: '코딩',
@@ -8,7 +8,7 @@ export const obj = {
 };
 
 export const selectBoard = (board) => {
-  return obj[board];
+  return boards[board];
 };
 
 /**
@@ -22,6 +22,6 @@ export const getBoardId = async (board) => {
 };
 
 
-export const BOARD_VALIDATION_ERRORS = {
-  BOARD_NOT_FOUND: "게시판이 존재하지 않습니다",
+export const BOARD_ERROR_MESSAGE = {
+  NOT_FOUND: "게시판이 존재하지 않습니다",
 };
