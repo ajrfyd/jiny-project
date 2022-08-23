@@ -1,6 +1,6 @@
 import { selectBoard, getBoardId } from "../utils/boardUtils.js";
-import { getArticle, saveArticle, saveNewArticle } from "../services/articleService.js";
-import { isValidUser, isValid } from "../services/userService.js";
+import { getArticle, updateArticle, saveArticle, removeArticle } from "../services/articleService.js";
+import { isValidUser } from "../services/userService.js";
 import { ARTICLE_ERROR_MESSAGE, ARTICLE_SUCCESS_MESSAGE  } from "../utils/articleUtils.js";
 import { verifyToken } from "../utils/authUtils.js";
 
@@ -36,7 +36,7 @@ export const createArticle = async (req, res) => {
 
   const { email } = verifyToken(authorization);
 
-  const article = await saveNewArticle(email, boardId, title, content);
+  const article = await saveArticle(email, boardId, title, content);
 
   res.status(200).json(article);
 };
@@ -48,11 +48,10 @@ export const modifyArticle = async (req, res) => {
 
   // 클라이언트 측에서 보낸 token을 통해 게시물의 수정 
   // 권한이 있는지 파악 
-  const boardId = await getBoardId(board);
-  const article = await getArticle(boardId, id);
-  const { author } = article;
+  const article = await getArticle(id);
 
-  const isValid = await isValidUser(authorization, author);
+
+  const isValid = await isValidUser(authorization, id);
 
   if(!isValid) {
     return res.status(401).json({
@@ -66,7 +65,7 @@ export const modifyArticle = async (req, res) => {
     content
   }
 
-  await saveArticle(newArticle, id);
+  await updateArticle(newArticle, id);
   res.status(200).json(newArticle);
 };
 
@@ -74,12 +73,15 @@ export const deleteArticle = async (req, res) => {
   const authorization = req.headers['authorization'].split(' ')[1];
   const { id } = req.params;
   
-  const isValidUser = await isValid(authorization, id);
-  if(!isValidUser) {
+  const isValid = await isValidUser(authorization, id);
+
+  if(!isValid) {
     return res.status(401).json({
       message: ARTICLE_ERROR_MESSAGE.INVAID_AUTH
     })
   }
+
+  removeArticle(id);
 
   res.status(200).json({
     message: ARTICLE_SUCCESS_MESSAGE.DELETE_SUCCESS

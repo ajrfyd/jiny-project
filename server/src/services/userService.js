@@ -98,11 +98,11 @@ export const userList = async () => {
  * @param { string } author
  * @returns boolean
  */
-export const isValidUser = async (token, author) => {
-  const user = await verifyToken(token);
-  // log(c.bgGreenBright(JSON.stringify(user, null, 2)));
-  return user.userName === author;
-}
+// export const isValidUser = async (token, author) => {
+//   const user = await verifyToken(token);
+//   // log(c.bgGreenBright(JSON.stringify(user, null, 2)));
+//   return user.userName === author;
+// }
 
 /**
  * 
@@ -110,7 +110,7 @@ export const isValidUser = async (token, author) => {
  * @param { number } id 
  * @returns { boolean } 
  */
-export const isValid = async (token, id) => {
+export const isValidUser = async (token, id) => {
   const userInfo = await verifyToken(token);
   const article = await db.Article.findOne({where: { id }})
   

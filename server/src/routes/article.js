@@ -19,6 +19,7 @@ const articleRouter = [
     }
   },
   {
+    // 게시글 수정
     method: 'put',
     route: BASE + '/:id',
     handler: (req, res) => {
@@ -26,6 +27,7 @@ const articleRouter = [
     }
   },
   {
+    // 게시글 삭제
     method: 'delete',
     route: BASE + '/:id',
     handler: (req, res) => {
