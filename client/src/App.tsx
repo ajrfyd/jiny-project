@@ -1,11 +1,18 @@
-import React from "react";
 import styled from "styled-components";
+import Glass from "./components/Glass";
+import Header from "./components/Header";
+import Home from './pages/Home';
+import { Routes, Route } from "react-router-dom";
 
 const App = () => {
 
   return (
     <Container>
       <Img src="bg.jpg"/>
+      <Glass />
+      <Routes>
+        <Route path='/' element={<Home />}/>
+      </Routes>
     </Container>
   )
 }
@@ -13,10 +20,13 @@ const App = () => {
 export default App;
 
 const Container = styled.div`
-  font-size: 300px;
   width: 100%;
   min-height: 100vh;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 
   /* background: url('bg.jpg') no-repeat left top;
   background-size: 100vw 100vh; */
