@@ -28,6 +28,13 @@ const userRouter = [
       // res.send('User');
       return signUp(req, res);
     }
+  },
+  {
+    method: 'put',
+    route: BASE + '/modify',
+    handler: (req, res) => {
+      return;
+    }
   }
 ]
 

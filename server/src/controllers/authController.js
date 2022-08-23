@@ -1,11 +1,11 @@
-import { createToken, isCorrectPwd, hashPwd, verifyToken } from "../utils/ahthUtils.js";
+import { createToken, isCorrectPwd, hashPwd, verifyToken } from "../utils/authUtils.js";
 import { formValidator, findUser, createUser, roleCheck, userList } from "../services/userService.js";
-import { USER_VALIDATION_ERRORS } from "../utils/ahthUtils.js";
+import { USER_VALIDATION_ERRORS } from "../utils/authUtils.js";
 import c from 'chalk';
 
 
 export const login = async (req, res) => {
-  const { userName, email, password } = req.body;
+  const { email, password } = req.body;
   const { isValid, message } = formValidator({ email, password});
 
   if(!isValid) {
@@ -24,7 +24,7 @@ export const login = async (req, res) => {
     const hashed = await hashPwd(password);
     if(isCorrectPwd(hashed, user.password)) {
       res.status(200).json({
-        token: createToken({ userName, email }),
+        token: createToken({ email, userName: user.userName }),
       });
     } else { 
       res.status(400).json({

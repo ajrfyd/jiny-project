@@ -4,8 +4,10 @@ import c from 'chalk';
 import dotenv from 'dotenv';
 import path from 'path';
 import { logger } from './middleware/middleware.js';
-import userRouter from './routes/user.js';
 import db from '../models/index.js';
+import userRouter from './routes/user.js';
+import boardRouter from './routes/board.js';
+import articleRouter from './routes/article.js';
 
 const { log } = console;
 
@@ -32,7 +34,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve() + '/build/index.html');
 });
 
-const routers = [...userRouter];
+const routers = [...userRouter, ...boardRouter, ...articleRouter];
 
 routers.forEach(({ method, route, handler}) => {
   app[method](route, handler);
@@ -40,7 +42,7 @@ routers.forEach(({ method, route, handler}) => {
 
 app.use((err, req, res, next) => {
   log(c.bgRed(err));
-  
+
 });
 
 app.listen(PORT, () => {

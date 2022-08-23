@@ -3,6 +3,15 @@ import bcrypt from 'bcrypt';
 
 const { JWT_SALT } = process.env;
 
+/**
+ * 토큰 문자열에서 필요한 정보만 잘라내는 함수
+ * @param {string} tokenStr 
+ * @returns {string}
+ */
+export const splitToken = (tokenStr) => {
+  return str.split(' ')[1];
+}
+
 export const createToken = (userInfo) => {
   return jwt.sign(userInfo, JWT_SALT);
 };

@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import db from '../../models/index.js';
-import { email_reg, pwd_reg, USER_VALIDATION_ERRORS, hashPwd, verifyToken} from '../utils/ahthUtils.js';
+import { email_reg, pwd_reg, USER_VALIDATION_ERRORS, hashPwd, verifyToken} from '../utils/authUtils.js';
 import c from 'chalk';
 
 const { log } = console;
@@ -92,3 +91,28 @@ export const formValidator = (form) => {
 export const userList = async () => {
   return await db.User.findAll();
 };
+
+/**
+ * 유저에게 권한이 있는지 체크 합니다.
+ * @param { string } token 
+ * @param { string } author
+ * @returns boolean
+ */
+export const isValidUser = async (token, author) => {
+  const user = await verifyToken(token);
+  // log(c.bgGreenBright(JSON.stringify(user, null, 2)));
+  return user.userName === author;
+}
+
+/**
+ * 
+ * @param { string } token 
+ * @param { number } id 
+ * @returns { boolean } 
+ */
+export const isValid = async (token, id) => {
+  const userInfo = await verifyToken(token);
+  const article = await db.Article.findOne({where: { id }})
+  
+  return userInfo.userName === article.author;
+}
