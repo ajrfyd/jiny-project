@@ -1,9 +1,17 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const Home = () => {
+type HomeProps = {
+  open: boolean;
+};
+
+type Props = {
+  open: boolean;
+}
+
+const Home = ({ open }: HomeProps) => {
 
   return (
-    <Container>
+    <Container open={open}>
       <h2>
         Welcome!
       </h2>
@@ -13,10 +21,10 @@ const Home = () => {
 
 export default Home;
 
-const Container = styled.div`
+const Container = styled.div<Props>`
   position: relative;
   z-index: 10;
-  text-align: center;
+  /* text-align: center; */
   transition: .5s;
   transition-delay: .5s;
 
@@ -28,4 +36,11 @@ const Container = styled.div`
     text-shadow: 0 5px 5px rgba(0, 0, 0, .2);
     font-family: 'Dancing Script', cursive;
   }
+  
+  ${({ open }) => open && css`
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-200px);
+    transition-delay: 0s;
+  `}
 `

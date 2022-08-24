@@ -3,16 +3,22 @@ import Glass from "./components/Glass";
 import Header from "./components/Header";
 import Home from './pages/Home';
 import { Routes, Route } from "react-router-dom";
+import { useState } from 'react';
 
 const App = () => {
+  const [toggle, setToggle] = useState(false);
 
+  const toggleHandler = () => setToggle(prev => !prev);
+
+  console.log(toggle);
   return (
     <Container>
-      <Img src="bg.jpg"/>
-      <Glass />
+      <Header onToggle={toggleHandler}/>
+      <Glass open={toggle}/>
       <Routes>
-        <Route path='/' element={<Home />}/>
+        <Route path='/' element={<Home open={toggle}/>} />
       </Routes>
+      <Img src="bg.jpg"/>
     </Container>
   )
 }
