@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const { DATABASE_PWD } = process.env;
+const { DATABASE_PWD, AWS_DATABASE_PWD } = process.env;
 
 const config = {
   development: {
@@ -23,7 +23,7 @@ const config = {
 
   production: {
       username: 'root',
-      password: DATABASE_PWD,
+      password: AWS_DATABASE_PWD,
       database: 'jiny-project',
       host: '127.0.0.1',
       dialect: 'mysql',
