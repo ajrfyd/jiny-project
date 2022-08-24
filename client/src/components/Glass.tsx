@@ -22,7 +22,7 @@ const Container = styled.div<Props>`
   position: absolute;
   top: 0;
   left: 0;
-  width: 40%;
+  width: 30%;
   height: 100%;
   z-index: 1;
   backdrop-filter: blur(15px);

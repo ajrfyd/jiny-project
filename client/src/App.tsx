@@ -1,20 +1,22 @@
 import styled from "styled-components";
 import Glass from "./components/Glass";
 import Header from "./components/Header";
-import Home from './pages/Home';
+import Home from './pages/home/Home';
 import { Routes, Route } from "react-router-dom";
 import { useState } from 'react';
+import { useGetUserState } from "./hooks/userHook";
 
 const App = () => {
   const [toggle, setToggle] = useState(false);
 
   const toggleHandler = () => setToggle(prev => !prev);
 
-  console.log(toggle);
+  const user = useGetUserState();
+  console.log(user);
   return (
     <Container>
-      <Header onToggle={toggleHandler}/>
-      <Glass open={toggle}/>
+      <Header onToggle={toggleHandler} open={toggle}/>
+      {/* <Glass open={toggle}/> */}
       <Routes>
         <Route path='/' element={<Home open={toggle}/>} />
       </Routes>

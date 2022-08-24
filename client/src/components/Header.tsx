@@ -1,16 +1,21 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Link } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Dispatch, SetStateAction } from 'react';
 
 type HeaderProps = {
   onToggle: () => void;
+  open: boolean;
 }
 
-const Header = ({ onToggle }: HeaderProps) => {
+type Props = {
+  open: boolean;
+}
+
+const Header = ({ onToggle, open }: HeaderProps) => {
 
   return (
-    <Container>
+    <Container open={open}>
       <Link to='/'>Jiny.</Link>
       <ToggleBtn >
         <GiHamburgerMenu onClick={onToggle} size={30}/>
@@ -21,7 +26,7 @@ const Header = ({ onToggle }: HeaderProps) => {
 
 export default Header;
 
-const Container = styled.header`
+const Container = styled.header<Props>`
   position: absolute;
   top: 0;
   left: 0;
@@ -32,7 +37,7 @@ const Container = styled.header`
   justify-content: space-between;
   align-items: center;
 
-  border: 5px solid red;
+  /* border: 5px solid red; */
 
   a {
     text-decoration: none;
@@ -41,7 +46,15 @@ const Container = styled.header`
     font-weight: bold;
     letter-spacing: 2px;
     text-transform: uppercase;
+    transition: .5s;
   }
+
+  ${({ open }) => open && css`
+    a {
+      opacity: 0;
+      visibility: hidden;
+    }
+  `}
 `
 
 const ToggleBtn = styled.div`

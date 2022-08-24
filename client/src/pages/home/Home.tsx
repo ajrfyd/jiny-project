@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import Glass from '../../components/Glass';
 
 type HomeProps = {
   open: boolean;
@@ -11,18 +12,21 @@ type Props = {
 const Home = ({ open }: HomeProps) => {
 
   return (
-    <Container open={open}>
-      <h2>
-        Welcome!
-      </h2>
-    </Container>
+    <>
+      <Glass open={open}/>
+      <Container open={open}>
+        <h2>
+          Welcome!
+        </h2>
+      </Container>
+    </>
   )
 }
 
 export default Home;
 
 const Container = styled.div<Props>`
-  position: relative;
+  /* position: relative; */
   z-index: 10;
   /* text-align: center; */
   transition: .5s;
