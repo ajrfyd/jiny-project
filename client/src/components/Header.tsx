@@ -73,4 +73,13 @@ const ToggleBtn = styled.div`
   &:hover {
     color: #6200ee;
   }
+
+  &:before {
+    content: 'login';
+    position: absolute;
+    top: .5rem;
+    left: -5rem;
+    font-size: 2rem;
+    
+  }
 `
