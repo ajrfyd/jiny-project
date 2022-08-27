@@ -3,8 +3,8 @@ import Glass from "./components/Glass";
 import Main from "./pages/main/Main";
 import Header from "./components/Header";
 import Home from './pages/home/Home';
-import { Routes, Route } from "react-router-dom";
-import { useState } from 'react';
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
 import { useGetUserState } from "./hooks/userHook";
 
 const App = () => {
@@ -12,15 +12,21 @@ const App = () => {
 
   const toggleHandler = () => setToggle(prev => !prev);
 
+  const navigate = useNavigate();
+
   const user = useGetUserState();
-  console.log(user);
+
+  useEffect(() => {
+    if(!user.isLogin) return;
+    navigate('/main');
+  }, [user]);
+
   return (
     <Container>
-      <Header onToggle={toggleHandler} open={toggle}/>
-      {/* <Glass open={toggle}/> */}
+      <Header onToggle={toggleHandler} open={toggle} isLogin={user.isLogin}/>
       <Routes>
-        <Route path='/' element={<Home open={toggle}/>} />
-        <Route path='/main' element={<Main /> } />
+        <Route path='/' element={<Home open={toggle} toggleHandler={toggleHandler}/>} />
+        <Route path='/main' element={<Main open={toggle} isLogin={user.isLogin}/>} />
       </Routes>
       <Img src="bg.jpg"/>
     </Container>

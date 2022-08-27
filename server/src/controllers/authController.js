@@ -26,6 +26,8 @@ export const login = async (req, res) => {
     if(await isCorrectPwd(password, user.password)) {
       res.status(200).json({
         token: createToken({ email, userName: user.userName }),
+        email,
+        userName: user.userName
       });
     } else {
       res.status(400).json({

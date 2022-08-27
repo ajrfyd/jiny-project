@@ -1,18 +1,31 @@
 import styled, { css } from "styled-components";
 import Glass from '../../components/Glass';
 import LoginForm from '../login/LoginForm';
+import { useEffect } from 'react';
+import { reqLogin } from '../../store/user/actions';
+import { useDispatch } from 'react-redux';
+import { useGetUserState } from '../../hooks/userHook';
 
 type HomeProps = {
   open: boolean;
+  toggleHandler: () => void;
 };
 
 type Props = {
   open: boolean;
 }
 
-const Home = ({ open }: HomeProps) => {
+const Home = ({ open, toggleHandler }: HomeProps) => {
+  const dispatch = useDispatch();
 
-  console.log(process.env)
+  useEffect(() => {
+    const user = localStorage.getItem('userInfo');    
+    if(!user) return;
+    if(user) {
+      const userInfo = JSON.parse(user); 
+      dispatch(reqLogin(userInfo.email, userInfo.userName));
+    }
+  }, []);
 
   return (
     <>
@@ -22,7 +35,7 @@ const Home = ({ open }: HomeProps) => {
           Welcome!
         </h2>
       </Container>
-      <LoginForm open={open}/>
+      <LoginForm open={open} toggleHandler={toggleHandler}/>
     </>
   )
 }

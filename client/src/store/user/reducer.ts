@@ -18,7 +18,26 @@ const initialState: StateType = {
 
 const loginReducer = (state: StateType = initialState, action: ActionType) => {
   switch(action.type) {
-    
+    case REQ_LOG_IN:
+      return {
+        ...state,
+        isLogin: true,
+        userInfo: {
+          ...state.userInfo,
+          email: action.payload.email,
+          userName: action.payload.userName
+        }
+      }
+    case REQ_LOG_OUT:
+      return {
+        ...state,
+        isLogin: false,
+        userInfo: {
+          ...state.userInfo,
+          email: '',
+          userName: ''
+        }
+      }
     case OPEN_MODAL: 
       return {
         ...state,

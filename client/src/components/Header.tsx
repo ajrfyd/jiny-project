@@ -2,27 +2,29 @@ import styled, { css } from "styled-components";
 import { Link } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md'
-import { Dispatch, SetStateAction } from 'react';
 
 type HeaderProps = {
   onToggle: () => void;
   open: boolean;
+  isLogin: boolean;
 }
 
 type Props = {
   open: boolean;
+  isLogin?: boolean;
 }
 
-const Header = ({ onToggle, open }: HeaderProps) => {
+const Header = ({ onToggle, open, isLogin }: HeaderProps) => {
 
   return (
     <Container open={open}>
       <Link to='/'>Jiny.</Link>
-      <ToggleBtn open={open}>
+      <ToggleBtn open={open} isLogin={isLogin}>
         {
           open ? <MdClose size={30} onClick={onToggle}/> : <GiHamburgerMenu onClick={onToggle} size={30}/>
         }
       </ToggleBtn>
+
     </Container>
   )
 }
@@ -87,9 +89,14 @@ const ToggleBtn = styled.div<Props>`
     ${({ open }) => open && css`
       content: ''
     `}
+
+    ${({ isLogin, open }) => isLogin && !open && css`
+      content: '';
+    `}
   }
 
   svg {
     transition: .5s;
   }
 `
+

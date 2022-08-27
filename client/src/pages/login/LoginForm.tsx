@@ -4,22 +4,25 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import baseApi from '../../api/axios';
 import { reqLogin } from './api';
+import { useNavigate } from 'react-router-dom';
 
 type LoginProps = {
   open: boolean;
+  toggleHandler: () => void;
 }
 
-type ToggleProps = LoginProps & {};
+type ToggleProps = {
+  open: boolean;
+};
 
-type ResponseType = {
-  token: string;
-}
 
-const Login = ({ open }: LoginProps) => {
+const Login = ({ open, toggleHandler }: LoginProps) => {
   const [needSignup, setNeedSignup] = useState(false);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordAgainRef = useRef<HTMLInputElement>(null);
+
+  const navigate = useNavigate();
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,8 +31,9 @@ const Login = ({ open }: LoginProps) => {
         email: emailRef.current.value,
         password: passwordRef.current.value
       }
-      const data = await reqLogin(user);
-      console.log(data);
+      await reqLogin(user);
+      toggleHandler();
+      navigate('/main');
     } else  {
       // console.log(emailRef.current.value);
       // console.log(passwordRef.current.value);
