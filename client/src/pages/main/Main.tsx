@@ -1,12 +1,12 @@
 import React from "react";
 
-const Login = () => {
+const Main = () => {
 
   return (
     <div>
-      Hello Login??
+      Hello main??
     </div>
   )
 }
 
-export default Login;
+export default Main;

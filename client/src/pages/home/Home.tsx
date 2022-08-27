@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import Glass from '../../components/Glass';
+import LoginForm from '../login/LoginForm';
 
 type HomeProps = {
   open: boolean;
@@ -11,6 +12,8 @@ type Props = {
 
 const Home = ({ open }: HomeProps) => {
 
+  console.log(process.env)
+
   return (
     <>
       <Glass open={open}/>
@@ -19,6 +22,7 @@ const Home = ({ open }: HomeProps) => {
           Welcome!
         </h2>
       </Container>
+      <LoginForm open={open}/>
     </>
   )
 }

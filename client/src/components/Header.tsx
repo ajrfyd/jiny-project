@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { Link } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import { MdClose } from 'react-icons/md'
 import { Dispatch, SetStateAction } from 'react';
 
 type HeaderProps = {
@@ -17,8 +18,10 @@ const Header = ({ onToggle, open }: HeaderProps) => {
   return (
     <Container open={open}>
       <Link to='/'>Jiny.</Link>
-      <ToggleBtn >
-        <GiHamburgerMenu onClick={onToggle} size={30}/>
+      <ToggleBtn open={open}>
+        {
+          open ? <MdClose size={30} onClick={onToggle}/> : <GiHamburgerMenu onClick={onToggle} size={30}/>
+        }
       </ToggleBtn>
     </Container>
   )
@@ -57,7 +60,7 @@ const Container = styled.header<Props>`
   `}
 `
 
-const ToggleBtn = styled.div`
+const ToggleBtn = styled.div<Props>`
   position: relative;
   width: 50px;
   top: -4rem;
@@ -75,11 +78,18 @@ const ToggleBtn = styled.div`
   }
 
   &:before {
-    content: 'login';
+    content: 'Login';
     position: absolute;
-    top: .5rem;
-    left: -5rem;
-    font-size: 2rem;
-    
+    left: -3rem;
+    top: 7px;
+    font-weight: bold;
+
+    ${({ open }) => open && css`
+      content: ''
+    `}
+  }
+
+  svg {
+    transition: .5s;
   }
 `

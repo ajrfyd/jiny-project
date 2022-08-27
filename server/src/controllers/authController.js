@@ -2,6 +2,7 @@ import { createToken, isCorrectPwd, hashPwd, verifyToken } from "../utils/authUt
 import { formValidator, findUser, createUser, roleCheck, userList } from "../services/userService.js";
 import { USER_VALIDATION_ERRORS } from "../utils/authUtils.js";
 import c from 'chalk';
+import bcrypt from 'bcryptjs';
 
 
 export const login = async (req, res) => {
@@ -9,24 +10,24 @@ export const login = async (req, res) => {
   const { isValid, message } = formValidator({ email, password});
 
   if(!isValid) {
+    console.log(message);
     return res.status(409).json({
       message
     })
   };
 
   const user = await findUser(email);
-  
   if(!user) {
     res.status(400).json({
       message: USER_VALIDATION_ERRORS.USER_NOT_FOUND
     })
   } else {
     const hashed = await hashPwd(password);
-    if(isCorrectPwd(hashed, user.password)) {
+    if(await isCorrectPwd(password, user.password)) {
       res.status(200).json({
         token: createToken({ email, userName: user.userName }),
       });
-    } else { 
+    } else {
       res.status(400).json({
         message: '비밀번호가 일치하지 않습니다.'
       })

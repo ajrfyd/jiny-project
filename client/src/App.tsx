@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Glass from "./components/Glass";
+import Main from "./pages/main/Main";
 import Header from "./components/Header";
 import Home from './pages/home/Home';
 import { Routes, Route } from "react-router-dom";
@@ -19,6 +20,7 @@ const App = () => {
       {/* <Glass open={toggle}/> */}
       <Routes>
         <Route path='/' element={<Home open={toggle}/>} />
+        <Route path='/main' element={<Main /> } />
       </Routes>
       <Img src="bg.jpg"/>
     </Container>

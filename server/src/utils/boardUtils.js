@@ -17,7 +17,7 @@ export const selectBoard = (board) => {
  * @returns Promise<number>
  */
 export const getBoardId = async (board) => {
-  const { id } = await db.Board.findOne({ where: { boardName: obj[board] } });
+  const { id } = await db.Board.findOne({ where: { boardName: boards[board] } });
   return id;
 };
 

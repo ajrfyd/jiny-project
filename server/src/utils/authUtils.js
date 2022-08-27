@@ -20,13 +20,15 @@ export const verifyToken = (token) => {
   return jwt.verify(token, JWT_SALT);
 };
 
-export const isCorrectPwd = (pwd, dbPwd) => {
-  return bcrypt.compare(pwd, dbPwd);
+export const isCorrectPwd = async (pwd, dbPwd) => {
+  // console.log(pwd);
+  // console.log(dbPwd);
+  return await bcrypt.compare(pwd, dbPwd);
 }
 
 /**
  * password를 hash 합니다.
- * @param { string } pwd 
+ * @param { string } pwd
  */
 export const hashPwd = async (pwd) => {
   return await bcrypt.hash(pwd, +process.env.PWD_ROUNDS);
@@ -41,4 +43,5 @@ export const USER_VALIDATION_ERRORS = {
   INVALID_PASSWORD: "패스워드는 8자 이상이어야 합니다",
   USER_NOT_FOUND: "로그인에 실패했습니다",
   EXIST_EMAIL: "이미 존재하는 메일입니다",
+  WRONG_PASSWORD: "비밀번호가 일치하지 않습니다."
 };

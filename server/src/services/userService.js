@@ -62,6 +62,7 @@ export const roleCheck = async (authorizaion) => {
 export const formValidator = (form) => {
 
   if(!Object.values(form).every(value => value)) {
+
     return {
       isValid: false,
       message: USER_VALIDATION_ERRORS.EMPTY_FORM
