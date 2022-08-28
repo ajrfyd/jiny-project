@@ -2,6 +2,9 @@ import styled from "styled-components";
 import Glass from "../../components/Glass";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import Alert from '../../components/Alert';
+import { useDispatch } from 'react-redux';
+import { reqLogout } from '../../store/user/actions';
 
 type MainProps = {
   open: boolean;
@@ -10,16 +13,27 @@ type MainProps = {
 
 const Main = ({ open, isLogin }: MainProps) => {
   const navigate = useNavigate();
+
   useEffect(() => {
     if(isLogin) return;
     navigate('/');
   }, [isLogin]);
 
+  const dispatch = useDispatch();
+  
+  const logoutHandler = () => {
+    localStorage.removeItem('userInfo');
+    dispatch(reqLogout());
+  }
+
   return (
     <Container>
       Main List Page;
       <Glass open={open}/>
-      <LogOutBtn>Logout</LogOutBtn>
+      <LogOutBtn onClick={logoutHandler}>
+        Logout
+      </LogOutBtn>
+      <Alert />
     </Container>
   )
 }
@@ -36,6 +50,14 @@ const LogOutBtn = styled.button`
   position: absolute;
   color: #fff;
   cursor: pointer;
-  top: 5rem;
-  left: 2rem;
+  top: 20px;
+  right: 2rem;
+  z-index: 100;
+  letter-spacing: 2px;
+
+  &:hover {
+    color: #000;
+    font-weight: bold;
+    transform: scale(1.1);
+  }
 `
