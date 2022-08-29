@@ -2,8 +2,7 @@ import React, { useState, useRef } from "react";
 import styled, { css } from 'styled-components';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
-import baseApi from '../../api/axios';
-import { reqLogin } from './api';
+import { reqLogin, useLoginMutation } from './api';
 import { useNavigate } from 'react-router-dom';
 
 type LoginProps = {
@@ -31,9 +30,10 @@ const Login = ({ open, toggleHandler }: LoginProps) => {
         email: emailRef.current.value,
         password: passwordRef.current.value
       }
-      await reqLogin(user);
-      toggleHandler();
-      navigate('/main');
+      // await reqLogin(user);
+      // toggleHandler();
+      // navigate('/main');
+      loginMutate(user);
     } else  {
       // console.log(emailRef.current.value);
       // console.log(passwordRef.current.value);
@@ -43,6 +43,12 @@ const Login = ({ open, toggleHandler }: LoginProps) => {
 
   const signupHandler = () => setNeedSignup(prev => !prev);
 
+  const { mutate: loginMutate } = useLoginMutation({
+    onSuccess: () => {
+      toggleHandler();
+      navigate('/main');
+    }
+  });
 
   return (
     <Container open={open} onSubmit={submitHandler}>

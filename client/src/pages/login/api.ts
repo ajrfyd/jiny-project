@@ -1,24 +1,15 @@
-import { useQuery, useMutation } from "react-query";
+import { useQuery, useMutation, UseMutationOptions } from "react-query";
 import baseApi from '../../api/axios';
 import { AxiosError } from 'axios';
+import { ResponseType, UserType } from "./type";
 
-type UserType = {
-  email: string;
-  password: string;
-};
 
-type ResponseType = {
-  token: string;
-}
-
-export const reqLogin = async (user: UserType) => {
+export const reqLogin = async (user: UserType): Promise<ResponseType> => {
   const { data } = await baseApi.post<ResponseType>('/users/login', user);
   return data;
-  // try {
-  // } catch(e) {
-  //   console.log(e);
-  // }
 }; 
 
 
-// const loginMutation = useMutation()
+export const useLoginMutation = (options?: UseMutationOptions<ResponseType, Error, UserType>) => {
+  return useMutation(reqLogin, options); 
+}

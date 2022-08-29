@@ -3,8 +3,9 @@ import Glass from "../../components/Glass";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Alert from '../../components/Alert';
-import { useDispatch } from 'react-redux';
-import { reqLogout } from '../../store/user/actions';
+import { useQuery } from 'react-query';
+import { reqBoardList } from './api';
+import Board from './Board'
 
 type MainProps = {
   open: boolean;
@@ -14,26 +15,26 @@ type MainProps = {
 const Main = ({ open, isLogin }: MainProps) => {
   const navigate = useNavigate();
 
+  const { data, error, isLoading } = useQuery(['reqBoardList'], reqBoardList);
+  console.log(data);
+
   useEffect(() => {
     if(isLogin) return;
     navigate('/');
   }, [isLogin]);
 
-  const dispatch = useDispatch();
-  
-  const logoutHandler = () => {
-    localStorage.removeItem('userInfo');
-    dispatch(reqLogout());
-  }
+  if(isLoading) return <div style={{ zIndex: 100 }}>Loading.....</div>
+  // if(!data) return null;
 
   return (
     <Container>
-      Main List Page;
       <Glass open={open}/>
-      <LogOutBtn onClick={logoutHandler}>
-        Logout
-      </LogOutBtn>
-      <Alert />
+      <BoardList>
+        {
+          data && data.map((data, idx) => <Board key={idx} >{data}</Board>)
+        }
+      </BoardList>
+      {/* <Alert /> */}
     </Container>
   )
 }
@@ -41,23 +42,9 @@ const Main = ({ open, isLogin }: MainProps) => {
 export default Main;
 
 const Container = styled.div`
+  z-index: 100;
 `
 
-const LogOutBtn = styled.button`
-  border: none;
-  outline: none;
-  background-color: transparent;
-  position: absolute;
-  color: #fff;
-  cursor: pointer;
-  top: 20px;
-  right: 2rem;
-  z-index: 100;
-  letter-spacing: 2px;
-
-  &:hover {
-    color: #000;
-    font-weight: bold;
-    transform: scale(1.1);
-  }
+const BoardList = styled.ul`
+  
 `

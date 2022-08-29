@@ -1,6 +1,7 @@
 import { getBoardList, intersectRotue } from "../controllers/boardController.js";
 const BASE = '/:board/list';
 
+
 const boardRouter = [
   {
     method: 'get',

@@ -2,6 +2,9 @@ import styled, { css } from "styled-components";
 import { Link } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md'
+import { useGetUserState } from '../hooks/userHook';
+import { useDispatch } from 'react-redux';
+import { reqLogout } from '../store/user/actions';
 
 type HeaderProps = {
   onToggle: () => void;
@@ -14,16 +17,31 @@ type Props = {
   isLogin?: boolean;
 }
 
-const Header = ({ onToggle, open, isLogin }: HeaderProps) => {
+const Header = ({ onToggle, open }: HeaderProps) => {
+  const { isLogin, userInfo } = useGetUserState();
+
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    localStorage.removeItem('userInfo');
+    dispatch(reqLogout());
+  }
 
   return (
     <Container open={open}>
       <Link to='/'>Jiny.</Link>
-      <ToggleBtn open={open} isLogin={isLogin}>
+      <SideMenuContainer open={open} isLogin={isLogin}>
         {
-          open ? <MdClose size={30} onClick={onToggle}/> : <GiHamburgerMenu onClick={onToggle} size={30}/>
+          isLogin && (
+            <LogoutBtn onClick={logoutHandler}>Logout</LogoutBtn>
+          )
         }
-      </ToggleBtn>
+        <ToggleBtn open={open} isLogin={isLogin}>
+          {
+            open ? <MdClose size={30} onClick={onToggle}/> : <GiHamburgerMenu onClick={onToggle} size={30}/>
+          }
+        </ToggleBtn>
+      </SideMenuContainer>
 
     </Container>
   )
@@ -36,9 +54,10 @@ const Container = styled.header<Props>`
   top: 0;
   left: 0;
   width: 100%;
-  padding: 40px 100px;
+  padding: 20px 30px;
   height: 150px;
   z-index: 100;
+  display: flex;
   justify-content: space-between;
   align-items: center;
 
@@ -61,12 +80,21 @@ const Container = styled.header<Props>`
     }
   `}
 `
+const SideMenuContainer = styled.div<Props>`
+  align-self: flex-start;
+  border: 5px solid red;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 10%;
+  ${({ isLogin }) => !isLogin && css`
+    justify-content: flex-end;
+  `}
+`
+
+
 
 const ToggleBtn = styled.div<Props>`
-  position: relative;
-  width: 50px;
-  top: -4rem;
-  left: 100%;
   text-align: center;
   padding-top: 3px;
   color: #fff;
@@ -100,3 +128,17 @@ const ToggleBtn = styled.div<Props>`
   }
 `
 
+const LogoutBtn = styled.button`
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 2px;
+
+  &:hover {
+    color: #000;
+    font-weight: bold;
+    transform: scale(1.1);
+  }
+`
