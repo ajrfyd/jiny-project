@@ -4,6 +4,10 @@ import { isValidUser } from "../services/userService.js";
 import { ARTICLE_ERROR_MESSAGE, ARTICLE_SUCCESS_MESSAGE  } from "../utils/articleUtils.js";
 import { verifyToken } from "../utils/authUtils.js";
 
+export const getArticleList = async (req, res) => {
+  console.log(req.params);
+};
+
 export const getArticleById = async (req, res) => {
   const { board, id } = req.params;
 

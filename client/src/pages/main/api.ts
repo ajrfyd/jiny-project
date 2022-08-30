@@ -7,3 +7,7 @@ export const reqBoardList = async (): Promise<ResponsType> => {
   return data;
 };
 
+export const reqArticleList = async (board: string) => {
+  return await baseApi.get(`/${board}/list`);
+};
+

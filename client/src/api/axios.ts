@@ -1,24 +1,27 @@
 import axios from "axios";
 
-const BASE_URL = process.env.NODE_ENV ==='development' ? 'http://localhost:4000' : 'http://jiny.devhk.me';
+export const BASE_URL = process.env.NODE_ENV ==='development' ? 'http://localhost:4000' : 'http://jiny.devhk.me';
 
 const baseApi = axios.create({
   baseURL: BASE_URL,
 });
 
-baseApi.interceptors.response.use(
+export const loginApi = axios.create({
+  baseURL: BASE_URL + '/users/login' 
+})
+
+loginApi.interceptors.response.use(
   (res) => {
+    if(!res.data) return;
     const { email, userName, token } = res.data;
 
     const userInfo = {
       email,
       userName,
       token
-    }
-
-    if(res.data) {
-      localStorage.setItem('userInfo', JSON.stringify(userInfo));
-    }
+    };
+    console.log(userInfo);
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
     return res;
   },
   (e) => {

@@ -2,23 +2,21 @@ import styled, { css } from "styled-components";
 
 type GlassProps = {
   open: boolean;
-  delay?: number;
 }
 
 type Props = {
   open: boolean;
-  delay?: number;
 }
 
-const Glass = ({ open, delay }: GlassProps) => {
+const ArticleGlass = ({ open }: GlassProps) => {
 
   return (
-    <Container open={open} delay={delay}>
+    <Container open={open}>
     </Container>
   )
 }
 
-export default Glass;
+export default ArticleGlass;
 
 const Container = styled.div<Props>`
   position: absolute;
@@ -35,14 +33,6 @@ const Container = styled.div<Props>`
   ${({ open }) => open && css`
     width: 100%;
     backdrop-filter: blur(20px);
-    transition-delay: 0s;
-  `}
-
-  ${({ delay }) => delay && css`
-    transition-delay: ${delay}s;
-  `}
-
-  ${({ open }) => !open && css`
     transition-delay: 0s;
   `}
 `

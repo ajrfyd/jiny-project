@@ -2,8 +2,10 @@ import React, { useState, useRef } from "react";
 import styled, { css } from 'styled-components';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
-import { reqLogin, useLoginMutation } from './api';
+import { useLoginMutation } from './api';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { reqLogin } from '../../store/user/actions';
 
 type LoginProps = {
   open: boolean;
@@ -20,6 +22,7 @@ const Login = ({ open, toggleHandler }: LoginProps) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordAgainRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -30,23 +33,18 @@ const Login = ({ open, toggleHandler }: LoginProps) => {
         email: emailRef.current.value,
         password: passwordRef.current.value
       }
-      // await reqLogin(user);
-      // toggleHandler();
-      // navigate('/main');
       loginMutate(user);
     } else  {
-      // console.log(emailRef.current.value);
-      // console.log(passwordRef.current.value);
-      // console.log(passwordAgainRef.current.value)
     }
   };
 
   const signupHandler = () => setNeedSignup(prev => !prev);
 
   const { mutate: loginMutate } = useLoginMutation({
-    onSuccess: () => {
+    onSuccess: (res) => {
+      const { email, userName } = res;
       toggleHandler();
-      navigate('/main');
+      dispatch(reqLogin(email, userName));
     }
   });
 

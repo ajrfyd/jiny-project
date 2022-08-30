@@ -17,16 +17,20 @@ const App = () => {
   const user = useGetUserState();
 
   useEffect(() => {
+    const storage = localStorage.getItem('userInfo');
     if(!user.isLogin) return;
     navigate('/main');
   }, [user]);
 
   return (
     <Container>
-      <Header onToggle={toggleHandler} open={toggle} isLogin={user.isLogin}/>
+      {
+        !user.isLogin && <Header onToggle={toggleHandler} open={toggle} isLogin={user.isLogin}/>
+      }
+      {/* <Header onToggle={toggleHandler} open={toggle} isLogin={user.isLogin}/> */}
       <Routes>
         <Route path='/' element={<Home open={toggle} toggleHandler={toggleHandler}/>} />
-        <Route path='/main' element={<Main open={toggle} isLogin={user.isLogin}/>} />
+        <Route path='/main' element={<Main isLogin={user.isLogin}/>} />
       </Routes>
       <Img src="bg.jpg"/>
     </Container>

@@ -23,5 +23,5 @@ export const getBoardId = async (board) => {
 
 
 export const BOARD_ERROR_MESSAGE = {
-  NOT_FOUND: "게시판이 존재하지 않습니다",
+  NOT_FOUND: "게시판에 글이 존재하지 않습니다",
 };

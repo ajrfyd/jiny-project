@@ -1,5 +1,11 @@
 const BASE = '/:board/article'
-import { getArticleById, modifyArticle, createArticle, deleteArticle } from "../controllers/articleController.js";
+import { 
+  getArticleById, 
+  modifyArticle, 
+  createArticle, 
+  deleteArticle, 
+  getArticleList 
+} from "../controllers/articleController.js";
 
 const articleRouter = [
   {

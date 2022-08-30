@@ -20,21 +20,19 @@ type Props = {
 const Header = ({ onToggle, open }: HeaderProps) => {
   const { isLogin, userInfo } = useGetUserState();
 
-  const dispatch = useDispatch();
-
-  const logoutHandler = () => {
-    localStorage.removeItem('userInfo');
-    dispatch(reqLogout());
-  }
+  const dispatch = useDispatch()
 
   return (
     <Container open={open}>
       <Link to='/'>Jiny.</Link>
       <SideMenuContainer open={open} isLogin={isLogin}>
-        {
-          isLogin && (
+        {/* {
+          isLogin ? (
             <LogoutBtn onClick={logoutHandler}>Logout</LogoutBtn>
-          )
+          ) : <div style={{ paddingRight: '1rem', color: '#fff', fontWeight: 'bold' }}>{open ? '' : 'Login'}</div>
+        } */}
+        {
+          open ? '' : 'Login'
         }
         <ToggleBtn open={open} isLogin={isLogin}>
           {
@@ -87,9 +85,11 @@ const SideMenuContainer = styled.div<Props>`
   justify-content: space-between;
   align-items: center;
   width: 10%;
+
   ${({ isLogin }) => !isLogin && css`
     justify-content: flex-end;
   `}
+
 `
 
 
@@ -107,7 +107,7 @@ const ToggleBtn = styled.div<Props>`
     color: #6200ee;
   }
 
-  &:before {
+  /* &:before {
     content: 'Login';
     position: absolute;
     left: -3rem;
@@ -118,10 +118,7 @@ const ToggleBtn = styled.div<Props>`
       content: ''
     `}
 
-    ${({ isLogin, open }) => isLogin && !open && css`
-      content: '';
-    `}
-  }
+  } */
 
   svg {
     transition: .5s;

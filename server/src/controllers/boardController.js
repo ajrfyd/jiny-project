@@ -15,7 +15,7 @@ export const intersectRotue = async (req, res) => {
 
   if(articleList.length === 0) {
     console.log('here!')
-    return res.status(400).json({
+    return res.json({
       message: BOARD_ERROR_MESSAGE.NOT_FOUND
     })
   }

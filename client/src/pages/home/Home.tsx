@@ -20,7 +20,9 @@ const Home = ({ open, toggleHandler }: HomeProps) => {
 
   useEffect(() => {
     const user = localStorage.getItem('userInfo');    
-    if(!user) return;
+    if(!user) {
+      return;
+    }
     if(user) {
       const userInfo = JSON.parse(user); 
       dispatch(reqLogin(userInfo.email, userInfo.userName));
