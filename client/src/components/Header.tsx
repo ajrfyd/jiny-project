@@ -32,7 +32,7 @@ const Header = ({ onToggle, open }: HeaderProps) => {
           ) : <div style={{ paddingRight: '1rem', color: '#fff', fontWeight: 'bold' }}>{open ? '' : 'Login'}</div>
         } */}
         {
-          open ? '' : 'Login'
+          open ? '' : <span>Login</span>
         }
         <ToggleBtn open={open} isLogin={isLogin}>
           {
@@ -80,7 +80,6 @@ const Container = styled.header<Props>`
 `
 const SideMenuContainer = styled.div<Props>`
   align-self: flex-start;
-  border: 5px solid red;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -89,6 +88,13 @@ const SideMenuContainer = styled.div<Props>`
   ${({ isLogin }) => !isLogin && css`
     justify-content: flex-end;
   `}
+
+  span {
+    font-weight: bold;
+    color: #fff;
+    margin-right: 1rem;
+    letter-spacing: 2px;
+  }
 
 `
 

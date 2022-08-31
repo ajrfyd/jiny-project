@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
-import { Link } from 'react-router-dom';
-import { useQuery } from 'react-query';
-import { reqArticleList } from './api';
+import { reqArticleList, useReqArticlesMutation } from './api';
+import { useState, SetStateAction } from 'react';
+import { Article } from './type';
+import axios from 'axios';
 
 type BoardProps = {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ type BoardProps = {
   openBoardHandler: () => void;
   idx: number;
   open: boolean;
+  setArticle: React.Dispatch<SetStateAction<Article[]>>;
 }
 
 type Props = {
@@ -16,27 +18,27 @@ type Props = {
   idx: number;
 }
 
-const Board = ({ children, address, openBoardHandler, idx, open }: BoardProps) => {
-
+const Board = ({ children, address, openBoardHandler, idx, open, setArticle }: BoardProps) => {
   const clickHander = () => {
 
   };
-  console.log(idx);
 
-  const reqArticleHandler = async () => {
-    const { data } = await reqArticleList(address);
+  const reqArticleHandler = () => {
+    articles(address);
     openBoardHandler();
-    console.log(data);    
   };
 
+  const { mutate: articles } = useReqArticlesMutation({
+    onSuccess: (data) => {
+        setArticle(data.articleList);
+      }
+  });
 
   return (
     <Container open={open} idx={idx}>
-      {/* <Link to={`/${address}/board`}> */}
       <div onClick={reqArticleHandler}>
         {children}
       </div>
-      {/* </Link> */}
     </Container>
   )
 }

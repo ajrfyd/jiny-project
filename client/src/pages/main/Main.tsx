@@ -8,6 +8,10 @@ import { reqBoardList } from './api';
 import Board from './Board'
 import { menuRouter } from '../../utils/utils';
 import { MdClose } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { reqLogout } from '../../store/user/actions';
+import { Article, ErrorMsg } from './type';
+import Empty from '../../components/Empty';
 
 type MainProps = {
   // open: boolean;
@@ -16,17 +20,22 @@ type MainProps = {
 
 const Main = ({ isLogin }: MainProps) => {
   const [open, setOpen] = useState(false);
+  const [article, setArticle] = useState<Article[]>([]);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const openBoardHandler = () => setOpen(true);
   const closeBoardHandler = () => setOpen(false);
 
   const closeHandler = () => {
+    setArticle([]);
     closeBoardHandler();
   };
 
   const logoutHandler = () => {
     localStorage.removeItem('userInfo');
+    dispatch(reqLogout());
     navigate('/');
   }
 
@@ -38,8 +47,9 @@ const Main = ({ isLogin }: MainProps) => {
   }, [isLogin]);
 
   if(isLoading) return <div style={{ zIndex: 100 }}>Loading.....</div>
-  
-  
+
+  console.log(article);
+
   return (
     <Container>
       <Glass open={open} delay={.7}/>
@@ -50,7 +60,7 @@ const Main = ({ isLogin }: MainProps) => {
         {
           data && data.map((data, idx) => {
             const value = menuRouter(data)[0];
-            return <Board key={idx} address={Object.values(value)[0]} openBoardHandler={openBoardHandler} idx={idx + 1} open={open}>{data}</Board>
+            return <Board key={idx} address={Object.values(value)[0]} openBoardHandler={openBoardHandler} idx={idx + 1} open={open} setArticle={setArticle}>{data}</Board>
           })
         }
       </BoardList>
@@ -58,6 +68,9 @@ const Main = ({ isLogin }: MainProps) => {
         !open && <LogoutBtn onClick={logoutHandler}>Logout</LogoutBtn>
       }
       {/* <Alert /> */}
+      {/* { 
+        open && <Empty />
+      } */}
     </Container>
   )
 }
@@ -101,4 +114,8 @@ const LogoutBtn = styled.button`
   &:hover {
     color: #fff;
   }
+`
+
+const ArticleContainer = styled.ul`
+  
 `
