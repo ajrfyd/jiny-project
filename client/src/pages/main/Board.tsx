@@ -71,6 +71,6 @@ const Container = styled.li<Props>`
   `}
 
   ${({ idx }) => idx && css`
-    transition-delay: 0.${idx}s
+    transition-delay: 0.${idx}s;
   `}
 `

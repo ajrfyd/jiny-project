@@ -12,3 +12,4 @@ export const getArticles = async (board) => {
   // log(c.bgMagenta(JSON.stringify(articleList, null, 2)))
   return articleList;
 };
+

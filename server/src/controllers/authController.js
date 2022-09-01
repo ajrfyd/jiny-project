@@ -17,12 +17,19 @@ export const login = async (req, res) => {
   };
 
   const user = await findUser(email);
+
   if(!user) {
     res.status(400).json({
       message: USER_VALIDATION_ERRORS.USER_NOT_FOUND
     })
   } else {
-    const hashed = await hashPwd(password);
+    if(user.role === 0) {
+      return res.status(200).json({
+        token: createToken({ email, userName: user.userName }),
+        email,
+        userName: user.userName
+      });
+    }
     if(await isCorrectPwd(password, user.password)) {
       res.status(200).json({
         token: createToken({ email, userName: user.userName }),

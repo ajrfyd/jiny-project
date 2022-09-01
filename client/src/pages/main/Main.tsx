@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Glass from "../../components/Glass";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -10,17 +10,22 @@ import { menuRouter } from '../../utils/utils';
 import { MdClose } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { reqLogout } from '../../store/user/actions';
-import { Article, ErrorMsg } from './type';
+import { Article as articleType, ErrorMsg } from './type';
 import Empty from '../../components/Empty';
+import Article from './Article';
 
 type MainProps = {
   // open: boolean;
   isLogin: boolean;
 };
 
+type Props = {
+  open: boolean;
+}
+
 const Main = ({ isLogin }: MainProps) => {
   const [open, setOpen] = useState(false);
-  const [article, setArticle] = useState<Article[]>([]);
+  const [article, setArticle] = useState<articleType[]>([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -67,10 +72,19 @@ const Main = ({ isLogin }: MainProps) => {
       {
         !open && <LogoutBtn onClick={logoutHandler}>Logout</LogoutBtn>
       }
+      {
+        article && (
+          <ArticleContainer open={open}>
+            {
+              article.map((article, idx) => <Article key={article.id} title={article.title} idx={idx + 1}/> )
+            }
+          </ArticleContainer>
+        )
+      }
+      {
+        article.length === 0 && <ArticleContainer open={open}><span>게시글이 존재하지 않습니다.</span></ArticleContainer>
+      }
       {/* <Alert /> */}
-      {/* { 
-        open && <Empty />
-      } */}
     </Container>
   )
 }
@@ -116,6 +130,24 @@ const LogoutBtn = styled.button`
   }
 `
 
-const ArticleContainer = styled.ul`
-  
+const ArticleContainer = styled.ul<Props>`
+  opacity: 0;
+  visibility: hidden;
+  transition: .5s;
+  transition-delay: .5s;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  ${({ open }) => open && css`
+    opacity: 1;
+    visibility: visible;
+    z-index: 100;
+  `}
+
+  span {
+    font-weight: bold;
+    font-size: 2rem;
+  }
 `
