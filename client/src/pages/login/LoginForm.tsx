@@ -28,10 +28,16 @@ const Login = ({ open, toggleHandler }: LoginProps) => {
   const [errMsg, setErrMsg] = useState('');
 
   const navigate = useNavigate();
+  const pwd_reg = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 
     e.preventDefault();
     if(emailRef.current && passwordRef.current) {
+      if(!pwd_reg.test(passwordRef.current.value)) {
+        setErrMsg('비밀번호의 형식에 맞지 않습니다.');
+        setVisible(true);
+        return;
+      }
       const user = {
         email: emailRef.current.value,
         password: passwordRef.current.value
@@ -57,6 +63,10 @@ const Login = ({ open, toggleHandler }: LoginProps) => {
       const { email, userName } = res;
       toggleHandler();
       dispatch(reqLogin(email, userName));
+    },
+    onError: () => {
+      setErrMsg('비밀번호 혹은 이메일주소가 다릅니다.');
+      setVisible(true);
     }
   });
 
@@ -65,6 +75,10 @@ const Login = ({ open, toggleHandler }: LoginProps) => {
       setErrMsg('가입하신 이메일로 로그인해 주세요.');
       setVisible(true);
       setNeedSignup(false);
+    },
+    onError: (res) => {
+      setErrMsg('이미 존재하는 메일주소 입니다.');
+      setVisible(true);
     }
   })
 
