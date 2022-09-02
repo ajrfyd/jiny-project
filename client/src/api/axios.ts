@@ -29,6 +29,10 @@ loginApi.interceptors.response.use(
   }
 )
 
+export const signupApi = axios.create({
+  baseURL: BASE_URL + '/users/create'
+})
+
 export default baseApi;
 
 

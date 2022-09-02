@@ -1,7 +1,8 @@
 import { useQuery, useMutation, UseMutationOptions } from "react-query";
-import baseApi, { loginApi } from '../../api/axios';
+import { loginApi, signupApi } from '../../api/axios';
 import { AxiosError } from 'axios';
-import { ResponseType, UserType } from "./type";
+import { ResponseType, UserType, SignUpSuccessMsg, NewUserType } from './type';
+import { useReqArticlesMutation } from '../main/api';
 
 
 export const reqLogin = async (user: UserType): Promise<ResponseType> => {
@@ -13,3 +14,13 @@ export const reqLogin = async (user: UserType): Promise<ResponseType> => {
 export const useLoginMutation = (options?: UseMutationOptions<ResponseType, Error, UserType>) => {
   return useMutation(reqLogin, options); 
 }
+
+
+export const reqSignup = async (user: NewUserType): Promise<SignUpSuccessMsg> => {
+  const { data } = await signupApi.post<SignUpSuccessMsg>('', user);  
+  return data;
+}
+
+export const userSignupMutation = (options?: UseMutationOptions<SignUpSuccessMsg, Error, NewUserType>) => {
+  return useMutation(reqSignup, options);
+} 

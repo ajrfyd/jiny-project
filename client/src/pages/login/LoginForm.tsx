@@ -2,10 +2,11 @@ import React, { useState, useRef } from "react";
 import styled, { css } from 'styled-components';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
-import { useLoginMutation } from './api';
+import { useLoginMutation, userSignupMutation } from './api';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { reqLogin } from '../../store/user/actions';
+import Alert from '../../components/Alert';
 
 type LoginProps = {
   open: boolean;
@@ -23,19 +24,30 @@ const Login = ({ open, toggleHandler }: LoginProps) => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordAgainRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
+  const [visible, setVisible] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
 
   const navigate = useNavigate();
-
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+
     e.preventDefault();
     if(emailRef.current && passwordRef.current) {
       const user = {
         email: emailRef.current.value,
         password: passwordRef.current.value
       }
+
+      if(needSignup && passwordAgainRef.current) {
+        if(user.password !== passwordAgainRef.current.value) {
+          setErrMsg('비밀번호가 서로 일치하지 않습니다.')
+          setVisible(true);
+          return;
+        }
+        signupMutate({ ...user, userName: '' });
+        return;  
+      }
       loginMutate(user);
-    } else  {
-    }
+    } 
   };
 
   const signupHandler = () => setNeedSignup(prev => !prev);
@@ -48,6 +60,19 @@ const Login = ({ open, toggleHandler }: LoginProps) => {
     }
   });
 
+  const { mutate: signupMutate } = userSignupMutation({
+    onSuccess: (res) => {
+      setErrMsg('가입하신 이메일로 로그인해 주세요.');
+      setVisible(true);
+      setNeedSignup(false);
+    }
+  })
+
+  const closeAlertHandler = () => {
+    setErrMsg('');
+    setVisible(false);
+  };
+
   return (
     <Container open={open} onSubmit={submitHandler}>
       <h1>
@@ -57,7 +82,7 @@ const Login = ({ open, toggleHandler }: LoginProps) => {
       </h1>
       <Section>
         <label>Email</label>
-        <CustomInput type="text" placeHolder="email" ref={emailRef}/>
+        <CustomInput type="email" placeHolder="email" ref={emailRef}/>
       </Section>
       <Section>
         <label>Password</label>
@@ -81,6 +106,7 @@ const Login = ({ open, toggleHandler }: LoginProps) => {
           !needSignup && <CustomButton type='button' onClick={signupHandler}>회원가입</CustomButton>
         }
       </BtnContainer>
+      <Alert visible={visible} closeHandler={closeAlertHandler} text={errMsg}/>
     </Container>
   )
 }
